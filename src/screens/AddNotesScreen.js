@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Share,
   ScrollView,
+  BackHandler,
 } from 'react-native';
 import {styles} from '../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -19,6 +20,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 class AddNotesScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      this.handleBackButtonClick,
+    );
     if (this.props.navigation.getParam('noteDate')) {
       this.state = {
         open: false,
@@ -42,7 +48,17 @@ class AddNotesScreen extends React.Component {
       };
     }
   }
-
+  componentWillUnmount() {
+    BackHandler.removeEventListener(
+      'hardwareBackPress',
+      this.handleBackButtonClick,
+    );
+  }
+  handleBackButtonClick() {
+    this.props.navigation.goBack();
+    this.saveNotes();
+    return true;
+  }
   async saveNotes() {
     if (this.state.editNote) {
       const currentNote = {
