@@ -84,5 +84,23 @@ const baseStyle = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  hiddenView: {
+    justifyContent: 'flex-start',
+    display: 'flex',
+    alignItems: 'flex-end',
+  },
+  deleteButtonStyle: {
+    borderRadius: 15,
+    padding: 10,
+    margin: 10,
+    backgroundColor: 'red',
+    height: '82%',
+    width: 150,
+  },
+  fadedLogo: {
+    height: 150,
+    width: 150,
+    opacity: 0.4,
+  },
 });
 export const styles = createStyles(baseStyle);

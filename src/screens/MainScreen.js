@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StatusBar, FlatList, Text, Image, Alert} from 'react-native';
 import {connect} from 'react-redux';
-import {SpeedDial, SearchBar} from 'react-native-elements';
+import {SpeedDial, SearchBar, Button} from 'react-native-elements';
 import {NoteItem} from '../components';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,6 +9,7 @@ import {deleteNote} from '../redux/actions/noteAction';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import {styles} from '../styles';
 import Dialog from 'react-native-dialog';
+import {SwipeListView} from 'react-native-swipe-list-view';
 class MainScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -42,16 +43,6 @@ class MainScreen extends React.Component {
       noteContent={item.noteContent}
       noteDate={item.noteDate}
       noteBackground={item.noteBackground}
-      deleteFunction={async () => {
-        this.props.deleteNote(item.noteDate);
-        try {
-          AsyncStorage.removeItem(item.noteDate);
-          EncryptedStorage.removeItem(item.noteDate);
-          this.setState({refresh: true});
-        } catch (err) {
-          console.log(err);
-        }
-      }}
       editFunction={() => {
         this.props.navigation.navigate('AddNotes', item);
       }}
@@ -116,7 +107,7 @@ class MainScreen extends React.Component {
   render() {
     return (
       <View style={{flex: 1}}>
-        <StatusBar backgroundColor={'#74b9ff'} barStyle={'dark-content'} />
+        <StatusBar backgroundColor={'transparent'} barStyle={'dark-content'} />
         <View resizeMode="cover" style={{flex: 1}}>
           <SearchBar
             placeholder="Search Notes..."
@@ -210,29 +201,67 @@ class MainScreen extends React.Component {
             <View style={styles.emptyContainerView}>
               <Image
                 source={require('../assets/images/notes.png')}
-                style={{
-                  height: 150,
-                  width: 150,
-                  opacity: 0.4,
-                }}
+                style={styles.fadedLogo}
               />
               <Text style={{opacity: 0.4}}>Click '+' to add a note...</Text>
             </View>
           )}
           {this.state.searchContainerVisible && (
             <View>
-              <FlatList
+              <SwipeListView
                 data={this.state.searchList}
                 renderItem={this.renderItem}
                 keyExtractor={item => item.id}
+                renderHiddenItem={data => (
+                  <View style={styles.hiddenView}>
+                    <Button
+                      title="Delete"
+                      icon={{name: 'delete', color: 'white'}}
+                      buttonStyle={styles.deleteButtonStyle}
+                      onPress={async () => {
+                        this.props.deleteNote(data.item.noteDate);
+                        try {
+                          AsyncStorage.removeItem(data.item.noteDate);
+                          EncryptedStorage.removeItem(data.item.noteDate);
+                          this.setState({refresh: true});
+                        } catch (err) {
+                          console.log(err);
+                        }
+                      }}
+                    />
+                  </View>
+                )}
+                leftOpenValue={0}
+                rightOpenValue={-160}
               />
             </View>
           )}
           {this.state.notelistVisible && (
-            <FlatList
+            <SwipeListView
               data={this.props.noteList}
               renderItem={this.renderItem}
               keyExtractor={item => item.id}
+              renderHiddenItem={data => (
+                <View style={styles.hiddenView}>
+                  <Button
+                    title="Delete"
+                    icon={{name: 'delete', color: 'white'}}
+                    buttonStyle={styles.deleteButtonStyle}
+                    onPress={async () => {
+                      this.props.deleteNote(data.item.noteDate);
+                      try {
+                        AsyncStorage.removeItem(data.item.noteDate);
+                        EncryptedStorage.removeItem(data.item.noteDate);
+                        this.setState({refresh: true});
+                      } catch (err) {
+                        console.log(err);
+                      }
+                    }}
+                  />
+                </View>
+              )}
+              leftOpenValue={0}
+              rightOpenValue={-160}
             />
           )}
           <SpeedDial

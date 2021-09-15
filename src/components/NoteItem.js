@@ -8,42 +8,19 @@ function NoteItem({
   noteContent,
   noteDate,
   noteBackground,
-  deleteFunction,
   editFunction,
   notePin,
 }) {
   const date = new Date(Date.parse(noteDate));
   return (
-    <ListItem.Swipeable
+    <ListItem
       containerStyle={{
         ...styles.notesContainerView,
         backgroundColor: noteBackground,
       }}
-      rightContent={
-        <Button
-          title="Delete"
-          icon={{name: 'delete', color: 'white'}}
-          buttonStyle={{
-            ...styles.notesContainerView,
-            backgroundColor: 'red',
-            height: '80%',
-          }}
-          onPress={deleteFunction}
-        />
-      }
-      leftContent={
-        <Button
-          title="Edit"
-          icon={{name: 'edit', color: 'white'}}
-          buttonStyle={{
-            ...styles.notesContainerView,
-            backgroundColor: '#0984e3',
-            height: '80%',
-          }}
-          onPress={editFunction}
-          activeOpacity={1}
-        />
-      }>
+      onPress={editFunction}
+      activeOpacity={1}
+      underlayColor={'transparent'}>
       <Avatar source={require('../assets/images/writing.png')} />
       <ListItem.Content>
         <ListItem.Title style={styles.listTitle}>{noteTitle}</ListItem.Title>
@@ -70,7 +47,7 @@ function NoteItem({
         </View>
       )}
       <ListItem.Chevron color="black" />
-    </ListItem.Swipeable>
+    </ListItem>
   );
 }
 function getStringDay(day) {
