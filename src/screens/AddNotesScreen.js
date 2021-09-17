@@ -186,9 +186,9 @@ class AddNotesScreen extends React.Component {
                   }}
                 />
                 <TouchableOpacity
-                  style={{...styles.colorCircle, backgroundColor: '#4834d4'}}
+                  style={{...styles.colorCircle, backgroundColor: '#7f8fa6'}}
                   onPress={() => {
-                    this.setState({noteBackground: '#4834d4', visible: false});
+                    this.setState({noteBackground: '#7f8fa6', visible: false});
                   }}
                 />
                 <TouchableOpacity

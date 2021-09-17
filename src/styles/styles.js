@@ -94,7 +94,7 @@ const baseStyle = StyleSheet.create({
     padding: 10,
     margin: 10,
     backgroundColor: 'red',
-    height: '82%',
+    height: '83%',
     width: 150,
   },
   fadedLogo: {
